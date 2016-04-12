@@ -1,3 +1,4 @@
+
 var PORT = 9529;
 var http = require('http');
 var qs = require('qs');
@@ -38,11 +39,23 @@ var server = http.createServer(function(request,response){
         });
         //获取到了POST数据
         request.addListener("end",function(){
-            console.log(postdata);
-            response.end('success');
+            var parseString = require('xml2js').parseString;
+            parseString(postdata,function(err,result){
+                if(!err){
+                    //将xml数据通过xml2js模块解析成json格式
+                    console.log(result);
+                    response.end('success');
+                }
+            });
         });
     }
 });
 
 server.listen(PORT);
 console.log("Server running at port: " + PORT + "." );
+/**
+ 1、微信服务号接收到用户发过来的“文字”、“图片”、“语音”、“视频”、“小视频”、“位置”、“链接”类型的消息后，
+    先将XML格式转换为JSON格式数据。
+ 2、根据用户发过来的信息类型，立刻返回一个预先定义好的相应类型的消息。
+ 3、参考https://github.com/akira-cn/wxdev程序，实现一个微信墙的应用。
+ */

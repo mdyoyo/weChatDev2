@@ -2,6 +2,7 @@
 var PORT = 9529;
 var http = require('http');
 var qs = require('qs');
+var reply = require('./read_reply.js');
 var TOKEN = 'sspku';
 
 function checkSignature(params,token){
@@ -43,8 +44,10 @@ var server = http.createServer(function(request,response){
             parseString(postdata,function(err,result){
                 if(!err){
                     //将xml数据通过xml2js模块解析成json格式
-                    console.log(result);
-                    response.end('success');
+                    // console.log(result);
+                    var res = reply.replyText(result,'消息推送成功！');
+                    // response.end('success');
+                    response.end(res);
                 }
             });
         });

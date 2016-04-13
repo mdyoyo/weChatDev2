@@ -2,8 +2,11 @@
 var PORT = 9529;
 var http = require('http');
 var qs = require('qs');
-var reply = require('./read_reply.js');
 var TOKEN = 'sspku';
+
+var getUserInfo = require('./lib/user').getUserInfo;
+var replyText = require('./lib/reply').replyText;
+var wss = require('./lib/ws.js').wss;
 
 function checkSignature(params,token){
     //1.将token、timestamp、nonce三个参数进行字典序排序
@@ -44,10 +47,21 @@ var server = http.createServer(function(request,response){
             parseString(postdata,function(err,result){
                 if(!err){
                     //将xml数据通过xml2js模块解析成json格式
-                    // console.log(result);
-                    var res = reply.replyText(result,'消息推送成功！');
+                    //console.log("result = "+ result);
+                    //var res = reply.replyText(result,'消息推送成功！');
                     // response.end('success');
-                    response.end(res);
+                    //response.end(res);
+                    if(result.xml.MsgType[0] === 'text'){
+                        getUserInfo(result.xml.FromUserName[0])
+                            .then(function(userInfo){
+                                //获得用户信息，合并到消息中
+                                result.user = userInfo;
+                                //将消息通过websocket广播
+                                wss.broadcast(result);
+                                var res = replyText(result, '消息推送成功！');
+                                response.end(res);
+                            })
+                    }
                 }
             });
         });

@@ -2,6 +2,8 @@
 var PORT = 80;
 var http = require('http');
 var qs = require('qs');
+var express =require('express');
+var app = express();
 var TOKEN = 'sspku';
 
 var getUserInfo = require('./lib/user').getUserInfo;
@@ -67,7 +69,11 @@ var server = http.createServer(function(request,response){
         });
     }
 });
-
+app.get('index',function(req,res){
+    res.render('index',{
+        
+    });
+});
 server.listen(PORT);
 console.log("Server running at port: " + PORT + "." );
 /**

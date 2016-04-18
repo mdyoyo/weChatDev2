@@ -5,6 +5,9 @@
   <title>Wx client</title>
 <link rel="stylesheet" href="bootstrap.min.css">
   <style>
+   .well{
+     margin-left:20px;
+   }
     .well img{
       width:60px;
       margin-right:15px;
@@ -33,7 +36,7 @@
     var headimg = msg.user.headimgurl;
     var element1 = document.createElement('div');
     element1.className='well';
-    element1.innerHTML = '<img src="'+headimg+'">'+'说:'+content;
+    element1.innerHTML = '<img src="'+headimg+'">'+'说：'+content;
 //    var oLi = document.createElement('li');
 //    oLi.innerHTML = userName + '<img src="'+headimg+'">' + '说:' + content;
     msglist.appendChild(element1);

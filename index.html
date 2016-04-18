@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Wx client</title>
+<link rel="stylesheet" href="bootstrap.min.css">
   <style>
-    li > img{
-      width: 32px;
+    .well img{
+      width:60px;
+      margin-right:15px;
     }
   </style>
 </head>
 <body>
+<div id="msg">
+  <div style="text-align: center;">
+    <h3 style="color: #ac2925;">微信墙</h3>
+  </div>
+</div>
   <ul id="messages">
     
   </ul>
@@ -24,9 +31,11 @@
     msg.user = msg.user || {};
     var userName = msg.user.nickname;
     var headimg = msg.user.headimgurl;
-
-    var oLi = document.createElement('li');
-    oLi.innerHTML = userName + '<img src="'+headimg+'">' + '说:' + content;
+    var element1 = document.createElement('div');
+    element1.className='well';
+    element1.innerHTML = '<img src="'+headimg+'">'+'说:'+content;
+//    var oLi = document.createElement('li');
+//    oLi.innerHTML = userName + '<img src="'+headimg+'">' + '说:' + content;
     msglist.appendChild(oLi);
   };
 </script>

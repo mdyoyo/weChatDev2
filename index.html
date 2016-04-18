@@ -5,8 +5,9 @@
   <title>Wx client</title>
 <link rel="stylesheet" href="bootstrap.min.css">
   <style>
-   .well{
+   .well {
      margin-left:20px;
+     margin-right:20px;
    }
     .well img{
       width:60px;
@@ -20,9 +21,7 @@
     <h3 style="color: #ac2925;">微信墙</h3>
   </div>
 </div>
-  <ul id="messages">
-    
-  </ul>
+
 <script type="text/javascript">
   var msglist = document.getElementById('msg');
   var ws = new WebSocket('ws://123.206.71.86:9902/');
@@ -37,8 +36,6 @@
     var element1 = document.createElement('div');
     element1.className='well';
     element1.innerHTML = '<img src="'+headimg+'">'+'说：'+content;
-//    var oLi = document.createElement('li');
-//    oLi.innerHTML = userName + '<img src="'+headimg+'">' + '说:' + content;
     msglist.appendChild(element1);
   };
 </script>

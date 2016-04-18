@@ -8,7 +8,6 @@ var TOKEN = 'sspku';
 
 var getUserInfo = require('./lib/user').getUserInfo;
 var replyText = require('./lib/reply').replyText;
-var replyImage = require('./lib/reply').replyImage;
 var wss = require('./lib/ws.js').wss;
 
 function checkSignature(params,token){
@@ -63,7 +62,7 @@ var server = http.createServer(function(request,response){
                                 result.user = userInfo;
                                 //将消息通过websocket广播
                                 wss.broadcast(result);
-                                var res = replyImage(result);
+                                var res = replyText(result, '收到图片啦！');
                                 response.end(res);
                             })
                     }else if(result.xml.MsgType[0] === 'voice'){

@@ -1,4 +1,6 @@
-
+//_7D92-n6RhhY8--bE0McfjCmDLz7Y-bWSrf5qdd1QqXoYz-RrOc9Xy4LpVVSh0EAzVFsEsfuD5xFfT53U43GrgLLCbMA_pSsZE9RZiloF0sHTUjAGAUGH
+//{"url":"http:\/\/mmbiz.qpic.cn\/mmbiz\/hj2c969ZGPWUUHsiaHnF3EXlVTzSAAn1srWBH2acgQVt1jytzZARu0yFAvOLsqaicuNnot9wIlo4GCt5iafDaouDQ\/0"}
+//{"type":"image","media_id":"DJtimkqGw6lbaJzPIGiXGJl0NPbWSU31VoH2kSUe2RHY2_8R4Y4STChp6KW35u76","created_at":1460985551}
 var PORT = 9529;
 var http = require('http');
 var qs = require('qs');
@@ -6,6 +8,7 @@ var TOKEN = 'sspku';
 
 var getUserInfo = require('./lib/user').getUserInfo;
 var replyText = require('./lib/reply').replyText;
+var replyImage = require('./lib/reply').replyImage;
 var wss = require('./lib/ws.js').wss;
 
 function checkSignature(params,token){
@@ -43,11 +46,6 @@ var server = http.createServer(function(request,response){
             var parseString = require('xml2js').parseString;
             parseString(postdata,function(err,result){
                 if(!err){
-                    //将xml数据通过xml2js模块解析成json格式
-                    //console.log("result = "+ result);
-                    //var res = reply.replyText(result,'消息推送成功！');
-                    // response.end('success');
-                    //response.end(res);
                     if(result.xml.MsgType[0] === 'text'){
                         getUserInfo(result.xml.FromUserName[0])
                             .then(function(userInfo){
@@ -56,6 +54,26 @@ var server = http.createServer(function(request,response){
                                 //将消息通过websocket广播
                                 wss.broadcast(result);
                                 var res = replyText(result, '消息推送成功！');
+                                response.end(res);
+                            })
+                    }else if(result.xml.MsgType[0] === 'image'){
+                        getUserInfo(result.xml.FromUserName[0])
+                            .then(function(userInfo){
+                                //获得用户信息，合并到消息中
+                                result.user = userInfo;
+                                //将消息通过websocket广播
+                                wss.broadcast(result);
+                                var res = replyImage(result);
+                                response.end(res);
+                            })
+                    }else if(result.xml.MsgType[0] === 'voice'){
+                        getUserInfo(result.xml.FromUserName[0])
+                            .then(function(userInfo){
+                                //获得用户信息，合并到消息中
+                                result.user = userInfo;
+                                //将消息通过websocket广播
+                                wss.broadcast(result);
+                                var res = replyText(result, '收到语音啦！');
                                 response.end(res);
                             })
                     }

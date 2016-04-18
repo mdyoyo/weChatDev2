@@ -85,6 +85,7 @@ var server = http.createServer(function(request,response){
 server.listen(PORT);
 
 var express = require('express');
+var path = require('path');
 var app = express();
 app.use(express.static(path.join(__dirname,'public')));
 app.get('/index',function(req,res){

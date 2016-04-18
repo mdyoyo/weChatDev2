@@ -21,11 +21,11 @@
     
   </ul>
 <script type="text/javascript">
-  var msglist = document.getElementById('messages');
+  var msglist = document.getElementById('msg');
   var ws = new WebSocket('ws://123.206.71.86:9902/');
   ws.onmessage = function(evt)
   {
-    console.log(evt.data)
+    console.log(evt.data);
     var msg = JSON.parse(evt.data);
     var content = msg.xml.Content[0];
     msg.user = msg.user || {};
@@ -36,7 +36,7 @@
     element1.innerHTML = '<img src="'+headimg+'">'+'说:'+content;
 //    var oLi = document.createElement('li');
 //    oLi.innerHTML = userName + '<img src="'+headimg+'">' + '说:' + content;
-    msglist.appendChild(oLi);
+    msglist.appendChild(element1);
   };
 </script>
 </body>
